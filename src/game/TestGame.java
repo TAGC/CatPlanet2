@@ -34,7 +34,7 @@ public class TestGame extends BasicGame {
 
 	@Override
 	public void init(GameContainer container) throws SlickException {
-		player = new Player(50, 50, Angles.UP.value(), 10,
+		player = new Player(50, 50, Angles.UP.value(), 0.001,
 				new Image("src/player.png"));
 		land = new Image("src/worldpic.jpg" );
 		
@@ -45,7 +45,7 @@ public class TestGame extends BasicGame {
 			throws SlickException {
 		
 		int playerX, playerY, playerWidth, playerHeight;
-		handleInput(container.getInput());
+		handleInput(container.getInput(), delta);
 		
 		playerX = player.getPosition()[0];
 		playerY = player.getPosition()[1];
@@ -63,9 +63,11 @@ public class TestGame extends BasicGame {
 		} else if (playerY > WINDOW_HEIGHT) {
 			player.setY(-playerHeight);
 		}
+		
+		player.move();
 	}
 	
-	public void handleInput(Input input) {
+	public void handleInput(Input input, double delta) {
 		
 		if(input.isKeyDown(Input.KEY_D)) {
 			player.rotate(true);
@@ -74,9 +76,9 @@ public class TestGame extends BasicGame {
 		}
 		
 		if (input.isKeyDown(Input.KEY_W)) {
-			player.move(true);
+			player.accelerate(true, delta);
 		} else if (input.isKeyDown(Input.KEY_S)) {
-			player.move(false);
+			player.accelerate(false, delta);
 		}
 	}
 	

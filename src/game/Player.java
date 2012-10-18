@@ -10,8 +10,9 @@ public class Player {
 	private double angle;
 	private int width;
 	private int height;
-	private int speed;
-	private final double SPEED_DECREASE_FACTOR = 100;
+	private double speedX;
+	private double speedY;
+	private double acceleration;
 	private final double ROTATE_SPEED = 0.1;
 	private Image appearance;
 	
@@ -20,16 +21,16 @@ public class Player {
 		this.y = 0;
 		this.angle = 0;
 		this.appearance = appearance;
-		initialiseDimensions();
+		generalInitialisation();
 	}
 	
-	public Player(int speed, Image appearance) {
+	public Player(double acceleration, Image appearance) {
 		this.x = 0;
 		this.y = 0;
 		this.angle = 0;
-		this.speed = speed;
+		this.acceleration = acceleration;
 		this.appearance = appearance;
-		initialiseDimensions();
+		generalInitialisation();
 	}
 	
 	public Player(int x, int y, int angle, Image appearance) {
@@ -37,21 +38,23 @@ public class Player {
 		this.y = y;
 		this.angle = angle;
 		this.appearance = appearance;
-		initialiseDimensions();
+		generalInitialisation();
 	}
 	
-	public Player(int x, int y, int angle, int speed, Image appearance) {
+	public Player(int x, int y, int angle, double acceleration, Image appearance) {
 		this.x = x;
 		this.y = y;
 		this.angle = angle;
-		this.speed = speed;
+		this.acceleration = acceleration;
 		this.appearance = appearance;
-		initialiseDimensions();
+		generalInitialisation();
 	}
 	
-	private void initialiseDimensions() {
+	private void generalInitialisation() {
 		width = getAppearance().getWidth();
-		height = getAppearance().getHeight(); 
+		height = getAppearance().getHeight();
+		speedX = 0;
+		speedY = 0;
 	}
 	
 	public int[] getPosition() {
@@ -71,8 +74,16 @@ public class Player {
 		return angle;
 	}
 	
-	public int getSpeed() {
-		return speed;
+	private double getSpeedX() {
+		return speedX;
+	}
+	
+	private double getSpeedY() {
+		return speedY;
+	}
+	
+	public double getSpeed() {
+		return Math.sqrt(getSpeedX()*getSpeedX() + getSpeedY()*getSpeedY());
 	}
 	
 	public Image getAppearance() {
@@ -99,20 +110,37 @@ public class Player {
 		this.angle = angle;
 	}
 	
-	public void setSpeed(int speed) {
-		this.speed = speed;
+	public void setSpeedX(double speedX) {
+		this.speedX = speedX;
 	}
 	
-	public void move(boolean forwards) {
+	public void setSpeedY(double speedY) {
+		this.speedY = speedY;
+	}
+	
+	private void speedChangeFactor(double speedChangeFactor) {
+		setSpeedX(getSpeedX() * speedChangeFactor);
+		setSpeedY(getSpeedY() * speedChangeFactor);
+	}
+	
+	public void accelerate(boolean forwards, double delta) {
 		double angleRads = Math.toRadians(getAngle());
-		double trueSpeed = speed/SPEED_DECREASE_FACTOR;
-		double directionMod = forwards ? 1 : -1;
+		double direction = forwards ? 1 : -1;
 		
-		setX(getX() + trueSpeed*Math.sin(angleRads)*directionMod);
-		setY(getY() - trueSpeed*Math.cos(angleRads)*directionMod);
+		setSpeedX(getSpeedX() + acceleration*Math.sin(angleRads)*direction
+				*delta);
+		setSpeedY(getSpeedY() - acceleration*Math.cos(angleRads)*direction
+				*delta);
 		
-		//System.out.printf(String.format("Player moved to (%s, %s)\n\n", getX(), getY()));
+		System.out.printf(String.format("Speed X: %s, Speed y: %s\n", getSpeedX(), getSpeedY()));
+	}
+	
+	public void move() {
+		setX(getX() + getSpeedX());
+		setY(getY() + getSpeedY());
+		speedChangeFactor(0.999);
 		
+		//System.out.printf(String.format("Player moved to (%s, %s)\n\n", getX(), getY()));		
 	}
 	
 	public void rotate(boolean clockwise) {
