@@ -14,7 +14,7 @@ public class TestGame extends BasicGame {
 	
 	private final static int WINDOW_HEIGHT = 480;
 	private final static int WINDOW_WIDTH = 640;
-	private Player player;
+	private AttackPlayer player;
 	private Image land;
 	
 	public TestGame() {
@@ -28,14 +28,23 @@ public class TestGame extends BasicGame {
 		land.draw(0, 0);
 		player.display();
 		
+		if(player instanceof AttackPlayer) {
+			player.renewCooldown();
+			if(player.attackSpriteDetailsExist()) {
+				player.displayAttackSprites();
+			}
+		}
+		
 		g.drawString("Hello,  Slick world!", 0, 100);
 		
 	}
 
 	@Override
 	public void init(GameContainer container) throws SlickException {
-		player = new Player(50, 50, Angles.UP.value(), 0.001,
+		player = new AttackPlayer(50, 50, Angles.UP.value(), 0.001,
 				new Image("src/player.png"));
+		player.setAttackCharacteristics("src/cannon_ball.png",
+				player.getWidth()/2, 0, 0, 1, 1000, 200);
 		land = new Image("src/worldpic.jpg" );
 		
 	}
@@ -65,6 +74,16 @@ public class TestGame extends BasicGame {
 		}
 		
 		player.move();
+		
+		if(player instanceof AttackPlayer) {
+			player.renewCooldown();
+			if(player.attackSpriteDetailsExist()) {
+				player.decrementAttackSpriteDurations();
+				player.moveAttackSprites();
+				player.wrapAttackSpriteLocation(WINDOW_WIDTH, WINDOW_HEIGHT);
+				player.displayAttackSprites();
+			}
+		}
 	}
 	
 	public void handleInput(Input input, double delta) {
@@ -75,10 +94,16 @@ public class TestGame extends BasicGame {
 			player.rotate(false);
 		}
 		
-		if (input.isKeyDown(Input.KEY_W)) {
+		if(input.isKeyDown(Input.KEY_W)) {
 			player.accelerate(true, delta);
 		} else if (input.isKeyDown(Input.KEY_S)) {
 			player.accelerate(false, delta);
+		}
+		
+		if(input.isKeyDown(Input.KEY_SPACE)) {
+			if(player instanceof AttackPlayer) {
+				player.attack();
+			}
 		}
 	}
 	

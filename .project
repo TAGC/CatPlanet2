@@ -16,6 +16,11 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>cannon_ball.png</name>
+			<type>1</type>
+			<locationURI>PROJECT_LOC/src/cannon_ball.png</locationURI>
+		</link>
+		<link>
 			<name>player.png</name>
 			<type>1</type>
 			<locationURI>PROJECT_LOC/src/player.png</locationURI>

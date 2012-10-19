@@ -13,7 +13,7 @@ public class Player {
 	private double speedX;
 	private double speedY;
 	private double acceleration;
-	private final double ROTATE_SPEED = 0.1;
+	private final double ROTATE_SPEED = 0.3;
 	private Image appearance;
 	
 	public Player(Image appearance) {
@@ -132,7 +132,7 @@ public class Player {
 		setSpeedY(getSpeedY() - acceleration*Math.cos(angleRads)*direction
 				*delta);
 		
-		System.out.printf(String.format("Speed X: %s, Speed y: %s\n", getSpeedX(), getSpeedY()));
+		//System.out.printf(String.format("Speed X: %s, Speed y: %s\n", getSpeedX(), getSpeedY()));
 	}
 	
 	public void move() {
@@ -149,7 +149,7 @@ public class Player {
 		} else {
 			setAngle((getAngle()-ROTATE_SPEED) % Angles.DEGREES_IN_CIRCLE);
 		}
-		System.out.printf(String.format("Angle: %s\n", getAngle()));
+		//System.out.printf(String.format("Angle: %s\n", getAngle()));
 	}
 	
 	public void display() {
