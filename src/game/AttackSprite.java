@@ -39,16 +39,16 @@ public class AttackSprite extends Image {
 		return duration <= 0;
 	}
 	
-	public void decrementDuration() {
+	public void decrementDuration(int delta) {
 		if(!hasDurationExpired()) {
-			duration--;
+			duration -= delta;
 		}
 	}
 	
-	public void move() {
+	public void move(int delta) {
 		double angleRads = Math.toRadians(angle);
-		posX += speed*Math.sin(angleRads);
-		posY -= speed*Math.cos(angleRads);
+		posX += speed*delta*Math.sin(angleRads);
+		posY -= speed*delta*Math.cos(angleRads);
 	}
 	
 	public void display() {

@@ -135,19 +135,21 @@ public class Player {
 		//System.out.printf(String.format("Speed X: %s, Speed y: %s\n", getSpeedX(), getSpeedY()));
 	}
 	
-	public void move() {
-		setX(getX() + getSpeedX());
-		setY(getY() + getSpeedY());
+	public void move(int delta) {
+		setX(getX() + getSpeedX()*delta);
+		setY(getY() + getSpeedY()*delta);
 		speedChangeFactor(0.999);
 		
 		//System.out.printf(String.format("Player moved to (%s, %s)\n\n", getX(), getY()));		
 	}
 	
-	public void rotate(boolean clockwise) {
+	public void rotate(boolean clockwise, int delta) {
 		if(clockwise) {
-			setAngle((getAngle()+ROTATE_SPEED) % Angles.DEGREES_IN_CIRCLE);
+			setAngle((getAngle()+ROTATE_SPEED*delta)
+					% Angles.DEGREES_IN_CIRCLE);
 		} else {
-			setAngle((getAngle()-ROTATE_SPEED) % Angles.DEGREES_IN_CIRCLE);
+			setAngle((getAngle()-ROTATE_SPEED*delta)
+					% Angles.DEGREES_IN_CIRCLE);
 		}
 		//System.out.printf(String.format("Angle: %s\n", getAngle()));
 	}

@@ -85,9 +85,9 @@ public class AttackPlayer extends Player {
 		}
 	}
 	
-	public void moveAttackSprites() {
+	public void moveAttackSprites(int delta) {
 		for(AttackSprite attackSprite : getAttackSprites()) {
-			attackSprite.move();
+			attackSprite.move(delta);
 		}
 	}
 	
@@ -121,9 +121,9 @@ public class AttackPlayer extends Player {
 		}
 	}
 	
-	public void decrementAttackSpriteDurations() {
+	public void decrementAttackSpriteDurations(int delta) {
 		for(AttackSprite attackSprite : getAttackSprites()) {
-			attackSprite.decrementDuration();
+			attackSprite.decrementDuration(delta);
 			if(attackSprite.hasDurationExpired()) {
 				attackSprites.remove(attackSprite);
 			}

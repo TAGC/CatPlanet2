@@ -73,25 +73,29 @@ public class TestGame extends BasicGame {
 			player.setY(-playerHeight);
 		}
 		
-		player.move();
+		System.out.println("Delta: " + delta);
+		player.move(delta);
 		
 		if(player instanceof AttackPlayer) {
 			player.renewCooldown();
 			if(player.attackSpriteDetailsExist()) {
-				player.decrementAttackSpriteDurations();
-				player.moveAttackSprites();
+				player.decrementAttackSpriteDurations(delta);
+				player.moveAttackSprites(delta);
 				player.wrapAttackSpriteLocation(WINDOW_WIDTH, WINDOW_HEIGHT);
-				player.displayAttackSprites();
 			}
 		}
 	}
 	
-	public void handleInput(Input input, double delta) {
+	public void handleInput(Input input, int delta) {
+		
+		if(input.isKeyDown(Input.KEY_ESCAPE)) {
+			System.exit(0);
+		}
 		
 		if(input.isKeyDown(Input.KEY_D)) {
-			player.rotate(true);
+			player.rotate(true, delta);
 		} else if (input.isKeyDown(Input.KEY_A)) {
-			player.rotate(false);
+			player.rotate(false, delta);
 		}
 		
 		if(input.isKeyDown(Input.KEY_W)) {
